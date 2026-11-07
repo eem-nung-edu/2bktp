@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Інструкція користувача симулятора REM: навігація, обладнання, панелі, схеми, навчання та віртуальні прилади.">
+<title>REM — інструкція користувача</title>
+<style>
+:root{
+  color-scheme:light;
+  --ink:#1c2528;
+  --ink-secondary:#425458;
+  --muted:#64787c;
+  --accent:#086b60;
+  --accent-soft:#e6f2ee;
+  --line:#d0deda;
+  --paper:#ffffff;
+  --wash:#f4f2ec; /* Warm, comfortable educational reading background instead of stark white */
+  --subtle:#ebf4f0;
+  --kbd-bg:#f6faf8;
+  --kbd-border:#b8cac4;
+  --kbd-ink:#153b34;
+  --warn-bg:#fdf6ec;
+  --warn-border:#b97826;
+  --focus:#d29426;
+  --hero-grad:linear-gradient(135deg,#e2efe9,#f5f7f0);
+  --placeholder-bg:repeating-linear-gradient(135deg,#f4f7f4,#f4f7f4 12px,#eceff0 12px,#eceff0 24px);
+  --placeholder-border:#adc4bc;
+  --badge-bg:rgba(255,255,255,0.9);
+  --badge-border:#bcd5cd;
+  --nav:290px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px;font-size:16px}
+body{margin:0;background:var(--wash);color:var(--ink);font:1.06rem/1.72 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:hidden}
+a{color:var(--accent);text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+h1,h2,h3,h4{line-height:1.28;letter-spacing:-.015em;font-weight:700;color:var(--ink)}
+h1{font-size:clamp(2rem,3vw,2.5rem);max-width:36ch;margin:12px 0 14px}
+h2{font-size:clamp(1.5rem,2vw,1.8rem);margin:0 0 20px}
+h3{font-size:1.22rem;margin:32px 0 12px;scroll-margin-top:24px}
+h4{font-size:1.05rem;margin:22px 0 8px;font-weight:600}
+p{margin:12px 0;max-width:74ch}
+ul,ol{padding-left:26px;max-width:74ch}
+li{margin:7px 0}
+strong{font-weight:650}
+kbd{display:inline-block;padding:2px 7px;border:1px solid var(--kbd-border);border-bottom-width:2px;border-radius:5px;background:var(--kbd-bg);color:var(--kbd-ink);font:600 .86em/1.55 ui-monospace,"JetBrains Mono",monospace;white-space:nowrap}
+code{font-size:.9em;font-family:ui-monospace,"JetBrains Mono",monospace;overflow-wrap:anywhere}
+.skip{position:fixed;left:12px;top:-100px;z-index:30;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:10px 14px}
+.skip:focus{top:12px}
+.shell{max-width:1420px;margin:auto;display:grid;grid-template-columns:var(--nav) minmax(0,1fr);gap:32px;padding:28px 32px}
+.side{position:sticky;top:20px;max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain;align-self:start;padding:8px 6px 20px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.mark{display:grid;place-items:center;width:46px;height:46px;flex-shrink:0;background:var(--accent);color:#fff;border-radius:10px;font-weight:700;font-size:16px;letter-spacing:.03em}
+.brand strong{font-size:1.02rem;display:block;line-height:1.25}
+.brand small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.side summary{font-weight:700;font-size:15px;cursor:pointer;padding:6px 0;user-select:none;color:var(--ink)}
+.side nav ol{list-style:none;padding:0;margin:8px 0}
+.side nav li{margin:0}
+.side nav a{display:block;padding:7px 12px;border-left:3px solid transparent;border-radius:0 6px 6px 0;color:var(--ink-secondary);text-decoration:none;font-size:14.5px;line-height:1.45;font-weight:500}
+.side nav a:hover,.side nav a[aria-current]{background:var(--accent-soft);border-left-color:var(--accent);color:var(--accent);font-weight:700}
+.side nav .sub{padding-left:22px;font-size:13.5px}
+.side-note{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
+.main{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.03)}
+.hero{padding:40px 46px 32px;background:var(--hero-grad);border-bottom:1px solid var(--line);border-radius:13px 13px 0 0}
+.eyebrow{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.lead{font-size:1.12rem;max-width:72ch;color:var(--ink-secondary);margin:8px 0 0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.meta span{border:1px solid var(--badge-border);border-radius:30px;padding:3px 12px;font-size:12.5px;background:var(--badge-bg);color:var(--ink-secondary);font-weight:500}
+.chapter{padding:38px 46px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+.chapter:last-of-type{border-bottom:0}
+.chapter-num{display:block;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:8px}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;border:1px solid var(--line);border-radius:9px;margin:18px 0}
+table{width:100%;border-collapse:collapse;font-size:.95rem;line-height:1.55}
+th,td{text-align:left;vertical-align:top;padding:12px 15px;border-bottom:1px solid var(--line)}
+th{background:var(--subtle);font-weight:650;color:var(--ink)}
+tr:last-child td{border-bottom:0}
+.table-wrap table{min-width:540px}
+.callout{background:var(--accent-soft);border-left:4px solid var(--accent);padding:15px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:.98rem;max-width:74ch}
+.callout strong{display:block;margin-bottom:4px;font-weight:700}
+.callout p{margin:4px 0}
+.condition{background:var(--warn-bg);border-color:var(--warn-border)}
+.small{font-size:.9rem;color:var(--muted)}
+.back{display:inline-block;font-size:13.5px;margin-top:20px;text-decoration:none;font-weight:600}
+.figure{margin:22px 0;max-width:74ch}
+.placeholder{min-height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;padding:16px;border:1px dashed var(--placeholder-border);border-radius:9px;background:var(--placeholder-bg);color:var(--ink-secondary);text-align:center;font-size:13px}
+.placeholder b{font-size:14px;font-weight:650}
+.figure figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+.figure img{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px}
+details.extra{border:1px solid var(--line);border-radius:9px;padding:12px 16px;margin:16px 0;max-width:74ch}
+details.extra>summary{cursor:pointer;font-weight:650}
+.procedure{border-top:1px solid var(--line);padding-top:6px;margin-top:20px}
+.footer{padding:24px 46px;background:var(--subtle);font-size:13px;color:var(--muted);border-top:1px solid var(--line);border-radius:0 0 13px 13px}
+.keyline{height:4px;width:56px;background:var(--accent);border-radius:3px;margin-bottom:16px}
+@media(max-width:1050px){
+  :root{--nav:230px}
+  .shell{gap:20px;padding:18px}
+  .hero,.chapter{padding:30px 28px}
+  .footer{padding:22px 28px}
+}
+@media(max-width:768px){
+  html{scroll-padding-top:68px;font-size:16px}
+  .shell{display:block;padding:10px}
+  .side{position:sticky;top:8px;z-index:20;max-height:none;overflow:visible;padding:0;margin-bottom:12px}
+  .brand{margin-bottom:8px;padding:4px 4px 0}
+  .side-note{display:none}
+  #toc{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 12px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+  #toc summary{padding:4px 2px;display:flex;align-items:center;justify-content:space-between}
+  .side nav ol{display:grid;grid-template-columns:1fr;gap:2px;max-height:60dvh;overflow-y:auto;margin:8px 0 4px}
+  .side nav a{padding:9px 11px;font-size:14.5px}
+  .side nav .sub{padding-left:20px;font-size:13.5px}
+  .main{border-radius:12px}
+  .hero{border-radius:11px 11px 0 0;padding:24px 18px}
+  .chapter{padding:24px 18px}
+  .footer{border-radius:0 0 11px 11px;padding:18px}
+}
+@media(max-width:380px){
+  .hero,.chapter{padding:20px 14px}
+  th,td{padding:9px 11px}
+  .mark{width:40px;height:40px;font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.figure-link{display:block;cursor:zoom-in}
+@media(max-width:768px){html{scroll-padding-top:130px}.side{background:var(--wash)}}
+</style>
+</head>
+<body>
+<a class="skip" href="#about">Перейти до тексту</a>
+<div class="shell">
+<aside class="side" aria-label="Навігація посібником">
+<div class="brand"><span class="mark" aria-hidden="true">REM</span><div><strong>Інструкція користувача</strong><small>Симулятор підстанції · V44.21</small></div></div>
+<details id="toc" open><summary>Зміст</summary><nav aria-label="Зміст"><ol>
+<li><a href="#about">Про симулятор</a></li>
+<li><a href="#start">1. Початок роботи та навігація</a></li>
+<li><a class="sub" href="#keys">Клавіші й взаємодія</a></li>
+<li><a class="sub" href="#graphics">Налаштування графіки</a></li>
+<li><a href="#plant">2. Обладнання підстанції</a></li>
+<li><a href="#panels">3. Панелі, схеми та керування</a></li>
+<li><a class="sub" href="#schemes">Оперативна й однолінійна схеми</a></li>
+<li><a href="#learning">4. Навчання</a></li>
+<li><a class="sub" href="#procedures">Основні процедури</a></li>
+<li><a class="sub" href="#vt-training">Навчання для ТН</a></li>
+<li><a href="#instruments">5. Прилади</a></li>
+<li><a class="sub" href="#wega">WEGA 1</a></li>
+<li><a class="sub" href="#orion">ORION 3.1</a></li>
+<li><a class="sub" href="#other-instruments">Інші прилади та індикатори</a></li>
+<li><a href="#help">6. Типові труднощі</a></li>
+<li><a href="#reference">Коротка пам’ятка</a></li>
+</ol></nav></details>
+<p class="side-note">Редакція 2 · 06.11.2026</p>
+</aside>
+<main class="main" id="main">
+<header class="hero"><div class="keyline"></div><span class="eyebrow">Посібник із керування</span><h1>REM — інструкція користувача</h1><p class="lead">Як орієнтуватися у 3D-підстанції, працювати з панелями та схемами, проходити навчальні процедури й користуватися віртуальними приладами.</p><div class="meta"><span>Симулятор V44.21</span><span>Український інтерфейс</span><span>Редакція 2</span></div></header>
+
+<section class="chapter" id="about"><span class="chapter-num">Перед початком</span><h2>Про симулятор</h2>
+<p>REM відтворює двотрансформаторну підстанцію 10/0,4 кВ. У програмі можна оглядати обладнання ззовні й усередині приміщень, виконувати доступні перемикання, спостерігати за показниками та сигналізацією, користуватися схемами й проходити навчальні процедури.</p>
+<p>Інструкція пояснює керування програмою та доступні можливості симулятора. Послідовність дій у навчальній процедурі задає її плеєр; посібник не замінює програму робіт на реальному об’єкті.</p>
+<p>Робота починається у відкритій сторінці симулятора. Усі назви кнопок нижче наведено для українського інтерфейсу.</p>
+<div class="callout"><strong>З чого почати</strong><p>Ознайомтеся з <a href="#keys">клавішами</a>, виберіть потрібну <a href="#locations">точку огляду</a>, а потім відкрийте <a href="#panels">пульт диспетчера</a> або <a href="#learning">«Навчання»</a>. Для роботи з ORION перейдіть до <a href="#orion">розділу 5</a>.</p></div>
+</section>
+
+<section class="chapter" id="start"><span class="chapter-num">Розділ 01</span><h2>Початок роботи та навігація</h2>
+<h3 id="first-screen">1.1. Початковий екран</h3>
+<ol><li>Під час першого відкриття виберіть <strong>«Українська»</strong> на екрані «Оберіть мову». Кнопка <strong>«Пропустити»</strong> також продовжує запуск українською.</li><li>Дочекайтеся завантаження сцени й визначення якості графіки.</li><li>На екрані «Якість графіки» прочитайте вибраний рівень і натисніть <strong>«ОК»</strong>.</li><li>Почніть огляд території або виберіть потрібну точку в нижньому списку.</li></ol>
+<p>Після завершеного першого запуску ці екрани можуть більше не з’являтися. Мову можна змінити в налаштуваннях; її зміна перезавантажує сторінку. Незавершене вимірювання приладом після відновлення може потребувати повторення.</p>
+<p>Розташування основних елементів показано на <a href="#fig-01">рис. 1</a>.</p>
+<figure class="figure" id="fig-01" data-image="img/01-main-screen.webp"><a class="figure-link" href="img/01-main-screen.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 1. Основні області робочого екрана."><img src="img/01-main-screen.webp" alt="Рис. 1. Основні області робочого екрана. Сцена, верхня панель, нижня панель і мінікарта." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 1. Основні області робочого екрана.</figcaption></figure>
+
+<h3 id="keys">1.2. Клавіші й огляд мишкою</h3>
+<p>Натисніть <strong>«Огляд мишкою»</strong>, щоб увімкнути огляд. Рух миші повертає камеру. Наведіть центр огляду на потрібний орган керування й натисніть ліву кнопку миші або <kbd>F</kbd>. Якщо трохи затримати наведення, з’явиться підказка з назвою та призначенням елемента.</p>
+<p>Клацання у вільній області сцени також активує огляд. Окремі елементи, зокрема WEGA та настінні матеріали, можуть реагувати на перше натискання одразу. Для переходу до кнопок панелей звільніть курсор клавішею <kbd>Esc</kbd>.</p>
+<div class="table-wrap"><table><thead><tr><th>Клавіша</th><th>Дія</th><th>Примітка</th></tr></thead><tbody>
+<tr><td><kbd>W</kbd> / <kbd>↑</kbd>, <kbd>S</kbd> / <kbd>↓</kbd></td><td>Рух уперед / назад</td><td>У напрямку огляду; у звичайному режимі — по підлозі або території.</td></tr>
+<tr><td><kbd>A</kbd> / <kbd>←</kbd>, <kbd>D</kbd> / <kbd>→</kbd></td><td>Рух ліворуч / праворуч</td><td>Бічне переміщення.</td></tr>
+<tr><td><kbd>F</kbd></td><td>Взаємодія</td><td>З елементом у центрі огляду.</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Звільнити огляд або закрити активне вікно</td><td>Якщо відкрито панель чи діалог, спочатку закривається відповідний елемент. За потреби натисніть ще раз.</td></tr>
+<tr><td><kbd>C</kbd></td><td>Змінити режим пересування</td><td>Звичайний рух ↔ вільний політ.</td></tr>
+<tr><td><kbd>Z</kbd></td><td>Присісти / підвестися</td><td>У звичайному режимі пересування.</td></tr>
+<tr><td><kbd>E</kbd> / <kbd>Space</kbd></td><td>Піднятися</td><td>У режимі польоту.</td></tr>
+<tr><td><kbd>Q</kbd> / <kbd>Shift</kbd></td><td>Опуститися</td><td>У режимі польоту.</td></tr>
+<tr><td><kbd>J</kbd> / <kbd>Tab</kbd></td><td>Відкрити / сховати пульт диспетчера</td><td>Коли фокус не перебуває у полі або активному діалозі.</td></tr>
+<tr><td><kbd>R</kbd></td><td>Зняти / повернути дах</td><td>Для огляду розміщення обладнання.</td></tr>
+<tr><td><kbd>V</kbd></td><td>Змінити прозорість стін</td><td>Режим огляду внутрішнього компонування.</td></tr>
+<tr><td><kbd>H</kbd></td><td>Сховати / показати панелі</td><td>Також доступні екранні кнопки.</td></tr>
+</tbody></table></div>
+<p>Літерні клавіші відповідають фізичним позиціям клавіатури, тому перемикати українську розкладку на англійську не потрібно. Під час введення у поля, роботи з діалогами й деякими панелями клавіші руху не керують сценою. Щоб повернутися до переміщення, закрийте відповідну панель та активуйте огляд.</p>
+<div class="callout"><strong>Огляд і робочий доступ</strong><p>Політ та напівпрозорі стіни зручні для демонстрації компонування. Для підключення ORION, дій із кришкою WEGA та перевірки її дисплея поверніться до звичайного режиму, вимкніть напівпрозорі стіни й підійдіть до фасаду комірки.</p></div>
+
+<h3 id="locations">1.3. Швидкий перехід і мінікарта</h3>
+<p>У нижній панелі відкрийте список <strong>«Точка огляду»</strong> та виберіть місце. Доступні територія, входи до приміщень, КСО Т1/Т2, трансформатори Т1/Т2, РП–0,4 кВ / АВР, прилади вводу, АСКОЕ та огляд згори. Вибір точки зберігає поточний режим пересування. Для огляду з висоти спочатку ввімкніть <strong>«Вільний політ»</strong>, а потім виберіть <strong>«Згори»</strong>.</p>
+<p>Для входу до приміщення відкрийте його двері натисканням у сцені. Якщо двері зупинилися під час руху, відійдіть від траєкторії їх відкривання.</p>
+<p>Мінікарта показує ваше положення та напрямок огляду. Вона призначена для орієнтування; натискання на неї не переміщує користувача. У польоті та під час роботи з деякими панелями мінікарта приховується автоматично. Список точок і мінікарту показано на <a href="#fig-02">рис. 2</a>.</p>
+<figure class="figure" id="fig-02" data-image="img/02-navigation.webp"><a class="figure-link" href="img/02-navigation.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 2. Швидкий вибір місця та орієнтування на території."><img src="img/02-navigation.webp" alt="Рис. 2. Швидкий вибір місця та орієнтування на території. Список точок огляду та мінікарта." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 2. Швидкий вибір місця та орієнтування на території.</figcaption></figure>
+
+<h3 id="touch">1.4. Телефон і планшет</h3>
+<p>Для руху використовуйте екранний джойстик: відхилення вперед/назад переміщує користувача, бічне відхилення повертає його. Для огляду проведіть пальцем по вільній області сцени. Коротке торкання інтерактивного елемента виконує доступну дію.</p>
+<p>Точки огляду, режим пересування та присідання доступні в нижній панелі. У польоті з’являються окремі кнопки підйому й опускання: утримуйте потрібну кнопку для руху по висоті. Відкриті панелі можуть закривати або приховувати сенсорне керування сценою. Для повернення до руху закрийте панель.</p>
+<p>На вузькому екрані ORION і WEGA можуть показуватися по одній картці. Перемикайте їх кнопками <strong>«ORION 3.1»</strong> / <strong>«WEGA 1»</strong>; короткий результат ORION залишається доступним.</p>
+
+<h3 id="graphics">1.5. Налаштування графіки й інтерфейсу</h3>
+<ol><li>Натисніть <strong>«Налаштування»</strong> у верхній панелі.</li><li>За потреби змініть тему панелей і звук.</li><li>У розділі графіки виберіть рівень якості. Якщо автоматично встановлено нижчий рівень, а пристрій працює плавно, спробуйте <strong>високу якість</strong>.</li><li>Перевірте рух і огляд усередині приміщень. За помітних затримок поверніть нижчий рівень.</li></ol>
+<div class="table-wrap"><table><thead><tr><th>Параметр</th><th>Для чого потрібен</th></tr></thead><tbody>
+<tr><td>Якість графіки</td><td>Вибір між мінімальним, низьким, збалансованим і високим рівнями; впливає на деталізацію відображення та навантаження.</td></tr>
+<tr><td>Гібридні матеріали</td><td>Спрощують частину матеріалів сцени й можуть покращити плавність на слабших пристроях, зокрема телефонах. Результат залежить від пристрою.</td></tr>
+<tr><td>IBL</td><td>Додаткове освітлення оточення. Для роботи із симулятором вмикати його не обов’язково.</td></tr>
+<tr><td>FPS і Draw calls</td><td>Показники для оцінки навантаження та плавності. Для звичайної роботи їх можна приховати.</td></tr>
+<tr><td>Вимкнути згладжування MSAA</td><td>Зменшує навантаження ціною менш гладких країв об’єктів. Зміна потребує перезапуску програми.</td></tr>
+<tr><td>Повторна перевірка графіки</td><td>Дозволяє повторити оцінювання якості; відповідні засоби розташовані у розгорнутому блоці звіту.</td></tr>
+</tbody></table></div>
+<p>Елементи налаштування графіки показано на <a href="#fig-03">рис. 3</a>.</p>
+<figure class="figure" id="fig-03" data-image="img/03-settings.webp"><a class="figure-link" href="img/03-settings.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 3. Основні параметри графіки."><img src="img/03-settings.webp" alt="Рис. 3. Основні параметри графіки. Якість графіки, IBL і гібридні матеріали." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 3. Основні параметри графіки.</figcaption></figure>
+<a class="back" href="#toc">↑ До змісту</a></section>
+
+<section class="chapter" id="plant"><span class="chapter-num">Розділ 02</span><h2>Обладнання підстанції</h2>
+<p>У моделі представлено два вводи 10 кВ, дві секції шин 10 кВ, два трансформатори по <strong>630 кВА</strong>, дві секції 0,4 кВ та десять відхідних ліній. Трансформатори мають групу з’єднання <strong>Dyn11</strong>; у моделі задано глухозаземлену нейтраль і систему НН <strong>TN-S</strong>.</p>
+<h3>2.1. Основні зв’язки</h3>
+<p>Кожен ввід 10 кВ через свої апарати живить відповідну секцію шин. Від неї через апарати трансформаторного приєднання живиться Т1 або Т2. Низька сторона трансформатора підключена через ввідний апарат до своєї секції 0,4 кВ.</p>
+<p>Секції 10 кВ з’єднуються через секційний вимикач і роз’єднувачі секційного зв’язку. Секції 0,4 кВ мають окремий секційний автомат. У нормальному режимі секційні вимикачі розімкнені. Наявність секційного зв’язку не означає, що будь-яке його ввімкнення дозволено: програма перевіряє поточну конфігурацію й блокування.</p>
+<div class="table-wrap"><table><thead><tr><th>Група</th><th>Склад і призначення</th></tr></thead><tbody>
+<tr><td>Комірки 10 кВ</td><td>Два вводи, два трансформаторні приєднання, секційний вимикач СВ і секційний роз’єднувач СР. Доступні вимикачі, роз’єднувачі, заземлення, двері й засоби контролю відповідно до виду комірки.</td></tr>
+<tr><td>Т1 / Т2</td><td>Перетворення 10 кВ у 0,4 кВ. У сцені доступні огляд трансформаторних камер, табличок та індикації.</td></tr>
+<tr><td>РП–0,4 кВ</td><td>Ввідні й секційний автомати, засоби АВР, вимірювання та відхідні лінії. Перші п’ять ліній віднесено до секції I, решту — до секції II.</td></tr>
+<tr><td>ТТ і ТН</td><td>Кола вимірювання, обліку та захисту. Передбачено ТН вводів і шинних секцій, а також окреме керування вузлами ТН.</td></tr>
+<tr><td>РЗА й АВР</td><td>Термінали захисту та автоматика резервування 10 і 0,4 кВ. Індикація й дозволи залежать від стану моделі.</td></tr>
+<tr><td>ШОТ</td><td>Шафа оперативного живлення 110 В DC із випрямлячем та акумуляторною батареєю; живить відповідні кола керування й термінали.</td></tr>
+<tr><td>Облік та АСКОЕ</td><td>Лічильники GAMA 300, аналізатори PM5110, відображення енергії та вузол обміну даними.</td></tr>
+</tbody></table></div>
+<p>Розміщення основних груп обладнання показано на <a href="#fig-04">рис. 4</a>. Однолінійна схема підстанції відображена на <a href="#fig-06">рис. 6</a></p>
+<figure class="figure" id="fig-04" data-image="img/04-equipment-layout.webp"><a class="figure-link" href="img/04-equipment-layout.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 4. Основні приміщення й групи обладнання."><img src="img/04-equipment-layout.webp" alt="Рис. 4. Основні приміщення й групи обладнання. РП–10 кВ, РП–0,4 кВ та камери Т1/Т2." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 4. Основні приміщення й групи обладнання.</figcaption></figure>
+<h3>2.2. Як визначити потрібний апарат</h3>
+<p>Зіставляйте назву приєднання, табличку шафи, підказку при наведенні та позначення на схемі. Для однолінійного креслення передбачено варіанти <strong>DSTU</strong> і <strong>GOST</strong>. Статичні схеми на дверцятах комірок використовують позначення ГОСТ і не є живою індикацією положень.</p>
+<p>Короткі відповідності наведено в <a href="#designations">пам’ятці</a>. Вибір стандарту креслення змінює його подання, а не електричний стан обладнання.</p>
+<a class="back" href="#toc">↑ До змісту</a></section>
+
+<section class="chapter" id="panels"><span class="chapter-num">Розділ 03</span><h2>Панелі, схеми та керування</h2>
+<h3>3.1. Верхня й нижня панелі</h3>
+<div class="table-wrap"><table><thead><tr><th>Елемент</th><th>Призначення</th></tr></thead><tbody>
+<tr><td>Огляд мишкою</td><td>Активує огляд сцени; Esc повертає вільний курсор.</td></tr>
+<tr><td>Пульт Дисп.</td><td>Відкриває або приховує пульт диспетчера.</td></tr>
+<tr><td>Зняти дах / напівпрозорі стіни</td><td>Допомагають оглянути компонування підстанції.</td></tr>
+<tr><td>Налаштування</td><td>Мова, тема панелей, звук і параметри графіки.</td></tr>
+<tr><td>Довідка</td><td>Коротка інформація та перехід до теорії підстанції.</td></tr>
+<tr><td>Сховати панелі</td><td>Звільняє екран для огляду. Повернення — екранною кнопкою або H.</td></tr>
+<tr><td>Точка огляду</td><td>Швидкий перехід до потрібної зони.</td></tr>
+<tr><td>Вільний політ / звичайний рух; присідання</td><td>Зміна способу пересування та висоти огляду.</td></tr>
+<tr><td>Навчання</td><td>Відкриває процедури й завдання.</td></tr>
+<tr><td>Прилади</td><td>Відкриває меню з ORION 3.1. WEGA відкривається натисканням її блока на комірці.</td></tr>
+</tbody></table></div>
+<p>Назви частини кнопок змінюються разом зі станом функції. Відкриття іншої панелі може приховати попередню або згорнути навчальний плеєр.</p>
+
+<h3 id="dispatcher">3.2. Пульт диспетчера</h3>
+<p>Відкрийте пульт верхньою кнопкою або клавішею <kbd>J</kbd>. Пульт містить поточні показники, стани АВР й оперативного живлення, схему, органи керування вводами та лініями, журнал подій і спеціальні налаштування.</p>
+<ol><li>Знайдіть потрібне приєднання за заголовком.</li><li>Прочитайте показники та поточний стан апарата.</li><li>Натисніть потрібну доступну команду.</li><li>Дочекайтеся підтвердженого положення й перевірте індикацію або журнал. Якщо команда відхилена, прочитайте причину.</li></ol>
+<p>Кнопка джерела змінює його наявність у моделі. Профілі джерел задають навчальні відхилення живлення. Аварійні впливи, відмови, параметри захисту та фазові налаштування призначені для моделювання режимів і перевірки реакції автоматики.</p>
+<p>Кнопка <strong>«Повернути обладнання до нормального режиму роботи»</strong> відновлює нормальну конфігурацію моделі. Під час активної навчальної процедури спочатку потрібно її завершити або припинити.</p>
+<p>Основні області пульта показано на <a href="#fig-05">рис. 5</a>.</p>
+<figure class="figure" id="fig-05" data-image="img/05-dispatcher.webp"><a class="figure-link" href="img/05-dispatcher.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 5. Читання стану й результату команди на пульті."><img src="img/05-dispatcher.webp" alt="Рис. 5. Читання стану й результату команди на пульті. Показники, команда апарата й журнал подій." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 5. Читання стану й результату команди на пульті.</figcaption></figure>
+
+<h3 id="schemes">3.3. Оперативна й однолінійна схеми</h3>
+<p>Натисніть <strong>«Відкрити схему»</strong> на пульті диспетчера або інтерактивну настінну схему в 3D. У вікні є два окремі подання.</p>
+<h4>Оперативне подання</h4>
+<p>Показує підтверджені стани апаратів і поточні вимірювання. Для читання використовуйте позначення та легенду схеми. Параметр <strong>«Рух струму»</strong> керує анімацією; на нижчих рівнях якості він може бути недоступним. Відсутність анімації сама по собі не є підтвердженням відсутності напруги.</p>
+<h4>Однолінійна схема</h4>
+<ol><li>Перейдіть на вкладку <strong>«Однолінійна схема»</strong>.</li><li>За потреби виберіть <strong>DSTU</strong> або <strong>GOST</strong>.</li><li>Для зіставлення з фактичним станом увімкніть <strong>«Показати поточний режим роботи»</strong>. Початкове креслення має вихідні розімкнені контакти й не є поточним станом підстанції.</li><li>Змініть масштаб кнопками <strong>−</strong> / <strong>+</strong> або натисніть <strong>«До ширини»</strong>. За збільшення прокручуйте область схеми.</li></ol>
+<p>У поданні поточного режиму доступні додаткові параметри оформлення: палітра, тло й анімація. Вони змінюють зображення, а не положення апаратів. Розгорнутий довідковий блок містить джерела й реєстр обладнання.</p>
+<h4>Друк і збереження схеми</h4>
+<p>Кнопка <strong>«Друк / PDF»</strong> відкриває окреме вікно з вибраним видом схеми та діалогом друку браузера. За потреби дозвольте відкриття цього вікна. У друкованій однолінійній схемі не передається екранне накладання поточного режиму: це креслення. Оперативне подання друкується окремим видом.</p>
+<p>На вкладці однолінійної схеми є <strong>«Завантажити SVG»</strong>. Файл містить креслення у вибраному стандарті без накладання поточного режиму. Перед використанням друку або SVG перевірте, яке подання вибрано.</p>
+<p>Органи керування вікном схем показано на <a href="#fig-06">рис. 6</a>.</p>
+<figure class="figure" id="fig-06" data-image="img/06-diagram-controls.webp"><a class="figure-link" href="img/06-diagram-controls.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 6. Органи керування вікном схем."><img src="img/06-diagram-controls.webp" alt="Рис. 6. Органи керування вікном схем. Вкладки, DSTU/GOST, поточний режим, масштаб і друк." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 6. Органи керування вікном схем.</figcaption></figure>
+
+<h3 id="local-control">3.4. Комірки й місцеві дії</h3>
+<p>Підійдіть до фасаду потрібної КСО у звичайному режимі. Наведіть огляд на важіль, кнопку, двері чи прилад і прочитайте підказку. Взаємодія залежить від виду елемента: він може виконувати команду, відкривати панель або показувати інформацію.</p>
+<p>Місцева панель КСО містить доступні ручні операції, навчальні підтвердження та стан доступу. Якщо штатне відкриття дверей заблоковано, програма показує причину; слід виконати потрібні умови, а не повторювати натискання. Під час навчальної процедури підтвердження виконуються засобами її плеєра.</p>
+<p>У РП–0,4 кВ двері шафи відкриваються натисканням ручки. На шафах відхідних ліній виберіть потрібний ПВР за номером лінії та натисніть його руків’я. На вводах і секційному автоматі доступні кнопки I/O; для ввідних автоматів також передбачено вибір положення викочування. Контролюйте результат за положенням апарата, показниками й повідомленнями програми. Позначення <strong>I</strong> означає ввімкнене положення, <strong>O</strong> — вимкнене.</p>
+<div class="callout condition"><strong>Умова безпеки в симуляторі</strong><p>Доступ і перемикання залежать від ізоляції ділянки, положень апаратів, заземлень, дверей, місцевої заборони та чинних перевірок. Точну причину відмови показує програма для поточного стану.</p></div>
+<div class="callout"><strong>Перевірка в моделі</strong><p>Прийнята команда має змінити підтверджений стан. Натискання кнопки або початок анімації ще не означає завершення операції. Для кроку перевірки напруги потрібен прийнятий результат приладу.</p></div>
+<p>Приклад роботи з коміркою показано на <a href="#fig-07">рис. 7</a>.</p>
+<figure class="figure" id="fig-07" data-image="img/07-cell-control.webp"><a class="figure-link" href="img/07-cell-control.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 7. Місцеве керування й контроль дозволу на дію."><img src="img/07-cell-control.webp" alt="Рис. 7. Місцеве керування й контроль дозволу на дію. Фасад, місцеві органи керування та повідомлення про доступ." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 7. Місцеве керування й контроль дозволу на дію.</figcaption></figure>
+
+<h3>3.5. Довідка, теорія та вузол ТН</h3>
+<p>Відкрийте <strong>«Довідка»</strong>, потім <strong>«Теорія підстанції»</strong>. Доступні вкладки «Огляд», «Схема», «АВР і захист», «Облік», «Розрахунки», «Ізометрія», «Практикум» і «Джерела». В ізометрії можна змінювати вид компонування. Це довідкові матеріали, окремі від навчального плеєра.</p>
+<p>Вузол ТН відкривається кнопкою BA-IN1, BA-IN2, BA-B1 або BA-B2 у блоці <strong>«Трансформатори напруги · керування й навчання»</strong> пульта диспетчера, а також натисканням відповідного позначення в оперативному поданні схеми. Панель показує первинну та виміряну напруги, вторинну напругу, стан фаз, вставок і контролю кіл ТН. Тут доступні реалізовані дії з первинним роз’єднувачем, вторинним автоматом, перевіркою, заземленням і вставками. Причина відхилення команди відображається в панелі. Навчальні сценарії цього вузла описано в <a href="#vt-training">пункті 4.5</a>.</p>
+<a class="back" href="#toc">↑ До змісту</a></section>
+
+<section class="chapter" id="learning"><span class="chapter-num">Розділ 04</span><h2>Навчання</h2>
+<h3>4.1. Панель і початок процедури</h3>
+<p>Натисніть <strong>«Навчання»</strong> в нижній панелі. На вкладці <strong>«Процедури»</strong> можна розгорнути описи п’яти основних процедур; вкладка <strong>«Завдання»</strong> містить завдання для огляду й самоперевірки.</p>
+<ol><li>Виберіть потрібний вид процедури й натисніть <strong>«Пройти процедуру»</strong>.</li><li>Прочитайте призначення у заголовку плеєра. <strong>Конкретний об’єкт призначає програма автоматично</strong>: це може бути Т1/Т2, відповідний ввід або одна з десяти відхідних ліній.</li><li>Прочитайте текст поточного кроку та перевірте назву приєднання.</li><li>Виконуйте дії або відповідайте на питання за типом кроку.</li></ol>
+<p>Для нового проходження програма готує стан відповідного сценарію. Не орієнтуйтеся лише на конфігурацію, яку бачили до запуску навчання. За наявності збереженого проходження кнопка змінюється на <strong>«Продовжити процедуру»</strong>. Початок іншої процедури або запуск заново потребує врахування попередження про заміну поточного проходження.</p>
+<p>Панель вибору процедури показано на <a href="#fig-08">рис. 8</a>.</p>
+<figure class="figure" id="fig-08" data-image="img/08-learning-panel.webp"><a class="figure-link" href="img/08-learning-panel.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 8. Вибір виду навчання."><img src="img/08-learning-panel.webp" alt="Рис. 8. Вибір виду навчання. Вкладки, опис процедури та кнопка запуску." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 8. Вибір виду навчання.</figcaption></figure>
+
+<h3>4.2. Як працювати з кроком</h3>
+<div class="table-wrap"><table><thead><tr><th>Тип кроку</th><th>Дія користувача</th><th>Ознака виконання</th></tr></thead><tbody>
+<tr><td>Питання</td><td>Оберіть відповідь у кожному питанні й натисніть «Перевірити відповіді».</td><td>Плеєр підтверджує результат. За помилки прочитайте пояснення й виправте вибір.</td></tr>
+<tr><td>Дія з обладнанням</td><td>Скористайтеся «До шафи» та підказкою, виконайте потрібну операцію на призначеному апараті.</td><td>Модель підтвердила потрібне положення або стан.</td></tr>
+<tr><td>Навчальна відмітка</td><td>Прочитайте умову, підійдіть до призначеної КСО, дочекайтеся завершення переходу й натисніть кнопку підтвердження у плеєрі.</td><td>Плеєр прийняв відмітку та підтвердив виконання умов моделі.</td></tr>
+<tr><td>Перевірка приладом</td><td>Натисніть «До шафи · Прилади», підготуйте ORION і перевірте потрібні фази WEGA призначеної ділянки.</td><td>З’явилося «Крок процедури підтверджено» або відповідне підтвердження плеєра.</td></tr>
+</tbody></table></div>
+<p>Після прийняття кроку натисніть <strong>«Наступний крок»</strong>. Якщо перехід не дозволено, прочитайте повідомлення плеєра. Для дій із приводом дочекайтеся фактичного підтвердження; для вимірювання недостатньо лише вставити наконечник.</p>
+<p>Схема плеєра має режими <strong>«Фрагмент»</strong> і <strong>«Уся схема»</strong>, засоби масштабу та прокручування. Підсвічування й маркер допомагають знайти потрібний елемент. Пункт початкової процедури можна розгорнути для додаткового пояснення.</p>
+<div class="callout"><strong>Перевірка в моделі</strong><p>Відповідь на питання, навчальна відмітка й фактичне перемикання — різні способи виконання кроку. Не підміняйте потрібну дію довільною командою пульта: під час процедури доступні лише передбачені для поточного етапу операції.</p></div>
+<p>Елементи навчального кроку показано на <a href="#fig-09">рис. 9</a>.</p>
+<figure class="figure" id="fig-09" data-image="img/09-learning-step.webp"><a class="figure-link" href="img/09-learning-step.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 9. Читання поточного завдання та підтвердження його виконання."><img src="img/09-learning-step.webp" alt="Рис. 9. Читання поточного завдання та підтвердження його виконання. Завдання, схема, підказка, результат і навігація." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 9. Читання поточного завдання та підтвердження його виконання.</figcaption></figure>
+
+<h3>4.3. Повернення, продовження та завершення</h3>
+<ul><li><strong>«Попередній крок»</strong> відновлює збережений стан попереднього кроку. Це не лише перегортання тексту; пов’язані дії доведеться виконати повторно.</li><li><strong>Згортання плеєра</strong> звільняє екран і зберігає поточне проходження. Поверніться через доступну кнопку навчання.</li><li><strong>Після перезавантаження</strong> можна продовжити збережену процедуру, якщо браузер зберіг її дані. З’єднання ORION та незавершені вимірювання не відновлюються; потрібний крок може вимагати повторної перевірки.</li><li><strong>«Завершити тест»</strong> означає дострокове припинення. Програма попереджає про втрату поточного проходження. Для продовження оберіть «Продовжити тест» у діалозі.</li><li><strong>«Пройти ще раз»</strong> або <strong>«Заново»</strong> запускає нове проходження; призначений об’єкт може змінитися.</li></ul>
+<p>Якщо під час процедури змінився стан обладнання, після її завершення або припинення на панелі <strong>«Навчання»</strong> з’являється блок <strong>«Режим роботи після навчання»</strong>. У ньому можна <strong>повернути обладнання до стану перед навчанням</strong>, <strong>повернути нормальний режим</strong> або <strong>залишити поточний режим</strong>. Після успішного проходження поверніться до панелі «Навчання», щоб зробити цей вибір.</p>
+<p class="small">Збереження проходження залежить від сховища браузера. Інший браузер, інший пристрій або очищення даних не гарантують наявності попередньої процедури. Якщо програма повідомляє про неможливість збереження, врахуйте це до закриття сторінки.</p>
+
+<h3 id="procedures">4.4. Основні процедури</h3>
+<p>Нижче наведено орієнтири. Конкретні команди, умови й порядок визначає поточний крок плеєра.</p>
+<div class="procedure"><h4>Підготовка трансформатора до ремонту</h4><p><strong>Мета:</strong> пройти підготовку призначеного Т1 або Т2. Основні етапи охоплюють організаційні питання, керування потрібними апаратами 10 і 0,4 кВ, ізоляцію, перевірки, заземлення та доступ до відсіку. Звертайте увагу на режим АВР: виконуйте саме вказівку поточного сценарію, а не загальне вимкнення всієї автоматики.</p></div>
+<div class="procedure"><h4>Підготовка ввідної кабельної лінії 10 кВ до ремонту</h4><p><strong>Мета:</strong> підготувати призначений ввід. Плеєр веде між пультом, апаратами вводу, місцевими підтвердженнями й перевіркою приладом. Звіряйте номер вводу та контрольовану точку: вимірювання іншої комірки не виконує завдання.</p></div>
+<div class="procedure"><h4>Підготовка відхідної лінії 0,4 кВ до ремонту</h4><p><strong>Мета:</strong> пройти підготовку однієї з десяти ліній. Знайдіть призначену лінію й відповідний апарат. Частина етапів реалізована питаннями; не шукайте в сцені фізичні дії, які поточний крок пропонує розглянути як навчальне питання.</p></div>
+<div class="procedure"><h4>Підготовка вторинних кіл РЗА до перевірки</h4><p><strong>Мета:</strong> пройти підготовку кіл відповідного приєднання. Процедура поєднує питання про кола ТТ/ТН і перевірку захисту з реалізованими діями щодо апарата й оперативного живлення. Вона не відтворює повноцінний випробувальний комплекс РЗА.</p></div>
+<div class="procedure"><h4>Завершення ремонту та введення приєднання в роботу</h4><p><strong>Мета:</strong> пройти відновлення приєднання з підготовленого ремонтного стану. Основні етапи — приймання, підтвердження готовності, виконання передбачених перемикань і повернення автоматики. Це окремий сценарій; попереднє проходження підготовки до ремонту для його запуску не потрібне.</p></div>
+<h4>Вкладка «Завдання»</h4><p>Містить завдання простежити шлях електроенергії, розрізнити ТТ і ТН, порівняти вимірювання та облік, відрізнити РЗА/АВР/оперативне живлення й розпізнати N, PE та апарати заземлення. Це матеріали для самоперевірки, окремі від п’яти процедур. Використовуйте наведені орієнтири й оглядайте відповідне обладнання.</p>
+
+<h3 id="vt-training">4.5. Окреме навчання для шинного ТН</h3>
+<p>Відкрийте вузол ТН кнопкою у пульті диспетчера або через його позначення в оперативному поданні схеми. У його панелі є блок <strong>«Навчання: шинний ТН»</strong> з трьома сценаріями:</p>
+<div class="table-wrap"><table><thead><tr><th>Сценарій</th><th>Призначення</th></tr></thead><tbody><tr><td>Контроль кіл ТН</td><td>Показати сигналізацію втрати вимірювання та блокування АВР за несправності вимірювального кола.</td></tr><tr><td>Заміна вставок ТН</td><td>Ознайомити з реалізованою послідовністю дій у вузлі ТН.</td></tr><tr><td>Хибний пуск АВР: відмова контролю</td><td>Продемонструвати наслідки заданої відмови контролю вимірювальних кіл.</td></tr></tbody></table></div>
+<p>Після запуску перевірте назву вузла в заголовку: сценарій працює із шинним ТН відповідної секції. Для дії натискайте <strong>«Виконати крок»</strong>; для підтвердження огляду — <strong>«Перевірено · далі»</strong>. На етапі очікування кнопка недоступна, доки модель не підтвердить потрібний стан.</p>
+<p>Після виконання або для дострокового виходу натисніть <strong>«Завершити навчання й відновити попередній стан»</strong>. Закриття панелі під час цього навчання також завершує його з відновленням стану. Перед запуском завершіть активну основну процедуру.</p>
+<a class="back" href="#toc">↑ До змісту</a></section>
+
+<section class="chapter" id="instruments"><span class="chapter-num">Розділ 05</span><h2>Прилади</h2>
+<p>У меню <strong>«Прилади»</strong> нижньої панелі вибирається переносний ORION 3.1. Стаціонарні WEGA 1 розміщені на фасадах комірок. Лічильники, аналізатори, термінали й інші індикатори доступні безпосередньо на обладнанні.</p>
+
+<h3 id="wega">5.1. WEGA 1</h3>
+<p>WEGA 1 — стаціонарний блок індикації з фазами L1–L3, захисною кришкою, вимірювальними гніздами та перевіркою дисплея. Натисніть блок на фасаді КСО, щоб відкрити його збільшене зображення, і перевірте назву комірки в заголовку.</p>
+<p>Поки відкрите збільшене зображення WEGA, пересування призупинено. Щоб підійти ближче або змінити місце, закрийте його кнопкою <strong>×</strong>, перемістіться та знову натисніть потрібну WEGA.</p>
+<div class="table-wrap"><table><thead><tr><th>Місце встановлення</th><th>Контрольована точка в моделі</th></tr></thead><tbody><tr><td>Ввід 1 / Ввід 2</td><td>Лінійна сторона ввідного кабелю.</td></tr><tr><td>Т1 / Т2</td><td>Кабель трансформаторного приєднання після роз’єднувача й вимикача.</td></tr><tr><td>СВ</td><td>Шини секції I 10 кВ.</td></tr><tr><td>СР</td><td>Шини секції II 10 кВ.</td></tr></tbody></table></div>
+<p>На LCD символ блискавки біля фази відповідає індикації робочої напруги. Додаткова крапка відображає підтвердження вимірювального інтерфейсу в моделі. Відсутність символів сама по собі не підтверджує справність датчика або відсутність напруги на робочій ділянці.</p>
+<p><strong>«Перевірка дисплея»</strong> короткочасно показує тестові символи всіх фаз. Вона не замінює самотест ORION і не підтверджує справність усього вимірювального тракту. Кнопка <strong>«Відкрити / закрити кришку»</strong> змінює доступ до гнізд. Перед закриванням кришки від’єднайте від цієї WEGA обидва наконечники.</p>
+<p>Елементи WEGA 1 показано на <a href="#fig-10">рис. 10</a>.</p>
+<figure class="figure" id="fig-10" data-image="img/10-wega.webp"><a class="figure-link" href="img/10-wega.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 10. Елементи збільшеного блока WEGA 1."><img src="img/10-wega.webp" alt="Рис. 10. Елементи збільшеного блока WEGA 1. LCD, кришка, L1–L3, земляний контакт і тест дисплея." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 10. Елементи збільшеного блока WEGA 1.</figcaption></figure>
+
+<h3 id="orion">5.2. ORION 3.1 — підготовка</h3>
+<ol><li>Натисніть <strong>«Прилади» → «ORION 3.1»</strong>. У відповідному навчальному кроці можна скористатися кнопкою <strong>«До шафи · Прилади»</strong>.</li><li>Натисніть <strong>«Під’єднати для самотесту»</strong>.</li><li>Натисніть <strong>«Увімкнути / вимкнути»</strong> та дочекайтеся повідомлення <strong>«Самотест пройдено»</strong>.</li><li>Натисніть <strong>«Вийняти з тестових гнізд»</strong>. Самотест із наконечниками у власних гніздах ще не є вимірюванням на WEGA.</li></ol>
+<p>Якщо успішний самотест уже виконано й ORION увімкнений, повторно натискати <strong>«Увімкнути / вимкнути»</strong> не потрібно: це вимкне прилад. Якщо наконечники ще у власних тестових гніздах, натисніть лише <strong>«Вийняти з тестових гнізд»</strong> й переходьте до вимірювання.</p>
+<p>Якщо повідомлено про невдалий самотест, не переходьте до вимірювань. Прочитайте повідомлення приладу та перевірте, чи не задано його несправність. Вбудована інструкція відкривається кнопкою <strong>«Інструкція»</strong> на панелі ORION.</p>
+<p>На вузькому екрані після успішного самотесту й виймання наконечників із тестових гнізд панель може автоматично згорнутися. Натисніть WEGA потрібної комірки; результат ORION залишається в компактному ярлику.</p>
+<p>Підготовку ORION до вимірювань показано на <a href="#fig-11">рис. 11</a>.</p>
+<figure class="figure" id="fig-11" data-image="img/11-orion-self-test.webp"><a class="figure-link" href="img/11-orion-self-test.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 11. Підготовка ORION 3.1 до вимірювань."><img src="img/11-orion-self-test.webp" alt="Рис. 11. Підготовка ORION 3.1 до вимірювань. Кнопки підготовки та успішний результат." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 11. Підготовка ORION 3.1 до вимірювань.</figcaption></figure>
+
+<h3>5.3. Перевірка індикації напруги у фазах</h3>
+<div class="callout condition"><strong>Умова безпеки в симуляторі</strong><p>Для роботи з гніздами потрібні звичайний режим огляду, вимкнені напівпрозорі стіни, фізична близькість до потрібної WEGA, відкрита кришка й підготовлений ORION. Довжина кожного проводу — 1,5 м.</p></div>
+<ol><li>Оберіть <strong>«Обрати A»</strong> на панелі ORION.</li><li>Підійдіть до потрібної комірки й натисніть її WEGA. Звірте заголовок із завданням.</li><li>Відкрийте кришку.</li><li>Натисніть гніздо <strong>L1</strong>. Після прийнятого підключення з’явиться наконечник A.</li><li>Прочитайте результат, назву комірки та фазу на панелі ORION або в компактному рядку.</li><li>У тій самій панелі натисніть <strong>L2</strong>, прочитайте результат, потім повторіть для <strong>L3</strong>. Канал A переноситься між гніздами; окремо від’єднувати його перед кожною фазою не потрібно.</li></ol>
+<p>З’єднання із земляним контактом виконується разом із вимірювальним наконечником. Окремо натискати символ землі не потрібно. За відхиленої команди штекер не з’являється: прочитайте причину й виправте умови.</p>
+<div class="table-wrap"><table><thead><tr><th>Повідомлення</th><th>Як читати</th></tr></thead><tbody>
+<tr><td>Напруга наявна</td><td>На підключеній фазі індикується робоча напруга.</td></tr>
+<tr><td>Робоча напруга не індикується</td><td>Показ для поточної точки; сам по собі не виконує всіх умов підтвердження робочої ділянки.</td></tr>
+<tr><td>Напруга наявна · інтерфейс не підтверджений</td><td>Результат не слід трактувати як успішну перевірку відсутності напруги.</td></tr>
+<tr><td>Немає підключення</td><td>Перевірте канал, гніздо та досяжність проводу.</td></tr>
+</tbody></table></div>
+<div class="callout"><strong>Перевірка в моделі</strong><p>У навчальному кроці перевірки відсутності напруги потрібні придатні результати всіх трьох фаз саме призначеної робочої ділянки. Стежте за лічильником 1/3 → 2/3 → 3/3 та дочекайтеся <strong>«Крок процедури підтверджено»</strong>. За наявної напруги або непридатного сигналу відповідна фаза до цього лічильника не зараховується. Сам штекер або порожній LCD крок не завершують.</p></div>
+<p>Приклад підключення й читання результату показано на <a href="#fig-12">рис. 12</a>.</p>
+<figure class="figure" id="fig-12" data-image="img/12-orion-wega-measurement.webp"><a class="figure-link" href="img/12-orion-wega-measurement.webp" target="_blank" rel="noopener" aria-label="Відкрити: Рис. 12. Підключення та перевірка прийнятого результату."><img src="img/12-orion-wega-measurement.webp" alt="Рис. 12. Підключення та перевірка прийнятого результату. Наконечник A у WEGA, результат каналу й прогрес трьох фаз." width="1280" height="900" loading="lazy" decoding="async"></a><figcaption>Рис. 12. Підключення та перевірка прийнятого результату.</figcaption></figure>
+
+<h3>5.4. Два канали та порівняння фаз</h3>
+<p>У вільній роботі для двоканального порівняння підготуйте прилад, оберіть канал A та підключіть першу точку. Потім оберіть B і підключіть другу доступну точку. Обидві точки мають залишатися в межах досяжності відповідних проводів; гніздо, зайняте іншим наконечником, не приймає другий. Під час навчальної процедури діють обмеження її поточного кроку.</p>
+<p>ORION показує результат поточної пари: <strong>«збіг фаз»</strong>, <strong>«фази не збігаються»</strong>, <strong>«граничний кут»</strong> або неможливість фазування за поточними сигналами. Для інших пар змінюйте вибраний канал і його точку підключення.</p>
+<p>Поза активною навчальною процедурою доступний блок <strong>«Пояснення · дані моделі»</strong>. Наведений у ньому числовий кут є навчальними даними симулятора, а не цифровим показом фізичного ORION. Попередні результати не слід приймати за нове вимірювання після зміни електричного стану. Три порівняні пари не є дозволом на паралельне ввімкнення джерел.</p>
+
+<h3>5.5. Згортання, відключення та відновлення</h3>
+<div class="table-wrap"><table><thead><tr><th>Дія</th><th>Результат</th></tr></thead><tbody>
+<tr><td>Закрити збільшену WEGA кнопкою ×</td><td>Закривається збільшений вигляд; це не повне відключення ORION.</td></tr>
+<tr><td>Згорнути ORION</td><td>Панелі ховаються, з’єднання залишаються. Натисніть компактний ярлик ORION, щоб знову розгорнути панель.</td></tr>
+<tr><td>Від’єднати A / B</td><td>Від’єднується обраний канал.</td></tr>
+<tr><td>Відключити</td><td>Наконечники від’єднуються, панель ховається, незавершений набір вимірювань скидається.</td></tr>
+<tr><td>Відійти за досяжність проводу</td><td>Відповідний канал від’єднується автоматично; з’являється повідомлення.</td></tr>
+<tr><td>Близько двох хвилин без зміни стану підключень або індикації каналів</td><td>ORION автоматично вимикається. Для продовження знову виконайте самотест; незавершений набір перевірок потрібно повторити.</td></tr>
+<tr><td>Відновити навчальну процедуру</td><td>Фізичні підключення й незавершений набір перевірок скидаються; дотримуйтеся повідомлення про повторне вимірювання.</td></tr>
+</tbody></table></div>
+<p>Після прийняття кроку звичайне відключення ORION саме по собі не скасовує вже прийнятий результат. Зміна схеми живлення, фазових параметрів або стану вимірювального кола може його скасувати. Після вимірювання орієнтуйтеся на підтвердження плеєра. Якщо потрібно закрити кришку WEGA, спочатку натисніть <strong>«Від’єднати A»</strong> і <strong>«Від’єднати B»</strong>, потім закрийте кришку. Завершіть роботу кнопкою <strong>«Відключити»</strong> та перейдіть до наступного кроку в плеєрі.</p>
+<p>На широкому екрані панелі приладів можна пересувати за заголовки в доступній області. На вузькому екрані перемикайте картки й прокручуйте їхній вміст. Зміна розміру вікна перераховує розміщення.</p>
+
+<h3 id="other-instruments">5.6. Інші прилади та індикатори — коротко</h3>
+<p>Основні можливості приладів у симуляторі:</p>
+<div class="table-wrap"><table><thead><tr><th>Прилад / пристрій</th><th>Що доступно у REM</th></tr></thead><tbody>
+<tr><td><strong>PowerLogic PM5110</strong></td><td>На фасадах відповідних приєднань показує електричні величини моделі. Доступні сторінки показників, які перемикаються клавішами під дисплеєм.</td></tr>
+<tr><td><strong>GAMA 300</strong></td><td>Відображає код регістру, значення енергії A±/R± та індикатори. Натискання органу прокручування змінює регістр; імпульсна індикація пов’язана з обліком енергії.</td></tr>
+<tr><td><strong>Easergy P3U30</strong></td><td>Показує реалізовані сторінки вимірювань і станів, сигналізацію захисту та оперативного живлення. Доступні навігаційні клавіші й реалізовані команди термінала.</td></tr>
+<tr><td><strong>РЕЛСіС РЗЛ-05.А11</strong></td><td>Показує стан АВР 10 кВ, дозволи, блокування й сигнали. Реалізовано сторінки дисплея, команди секційного вимикача та скидання відповідного стану АВР.</td></tr>
+<tr><td><strong>Zelio Logic</strong></td><td>Відображає навчальну програму АВР 0,4 кВ. Доступні реалізовані сторінки й кнопки; перемикач режиму біля нього задає «АВТО / РУЧНИЙ».</td></tr>
+<tr><td><strong>MasterPacT MTZ1</strong></td><td>Доступні кнопки I/O, індикація положення й готовності приводу та заряджання. Для ввідних автоматів передбачено положення «Робоче», «Тестове», «Від’єднано» з перевіркою умов моделі.</td></tr>
+<tr><td><strong>Інші індикатори</strong></td><td>Аналогові прилади, температура, показники та сигналізація оперативного живлення відображають стан моделі. Для доступного елемента наведення або натискання показує передбачену інформацію.</td></tr>
+</tbody></table></div>
+<a class="back" href="#toc">↑ До змісту</a></section>
+
+<section class="chapter" id="help"><span class="chapter-num">Розділ 06</span><h2>Типові труднощі</h2>
+<div class="table-wrap"><table><thead><tr><th>Ситуація</th><th>Що перевірити або зробити</th></tr></thead><tbody>
+<tr><td>Не вдається натиснути панель: миша повертає огляд</td><td>Натисніть Esc. Якщо спочатку закрилося активне вікно, повторіть для виходу з огляду.</td></tr>
+<tr><td>Зникли кнопки та панелі</td><td>Натисніть H або екранну кнопку показу панелей.</td></tr>
+<tr><td>Клавіші не рухають користувача</td><td>Закрийте активний діалог або панель, вийдіть із поля введення й активуйте огляд сцени.</td></tr>
+<tr><td>Не видно мінікарти</td><td>Поверніться зі стану польоту або закрийте панель, що тимчасово приховує карту.</td></tr>
+<tr><td>Апарат не перемикається або двері не відчиняються</td><td>Прочитайте причину відмови, перевірте призначення апарата, режим керування й поточні умови доступу. Дочекайтеся завершення попередньої команди.</td></tr>
+<tr><td>Кнопка навчального підтвердження не приймає дію</td><td>Підійдіть до призначеної КСО, дочекайтеся завершення переходу та прочитайте повідомлення плеєра.</td></tr>
+<tr><td>Крок не завершується</td><td>Звірте тип кроку: питання, відмітка, дія або вимірювання. Виконайте потрібну дію саме на призначеному об’єкті та прочитайте повідомлення плеєра.</td></tr>
+<tr><td>Після «Попередній крок» змінився стан обладнання</td><td>Плеєр відновив збережений стан цього кроку. Виконайте потрібні дії повторно.</td></tr>
+<tr><td>ORION не підключається</td><td>Перевірте самотест, виймання наконечників із тестових гнізд, канал, кришку, вільне гніздо, звичайний режим, непрозорі стіни та відстань до WEGA. Для наближення закрийте збільшену WEGA кнопкою ×.</td></tr>
+<tr><td>Результат трьох фаз не зараховано</td><td>Перевірте комірку, усі три фази та придатність сигналів. За повідомленням моделі усуньте перешкоду й повторіть перевірку.</td></tr>
+<tr><td>WEGA не дає закрити кришку</td><td>Від’єднайте від цієї WEGA канали A і B, потім повторіть дію.</td></tr>
+<tr><td>ORION вимкнувся під час роботи</td><td>За тривалого незмінного стану каналів діє автоматичне вимкнення. Повторіть самотест і незавершені вимірювання.</td></tr>
+<tr><td>Штекер зник під час руху</td><td>Перевищено досяжність проводу. Підійдіть до фасаду й повторіть підключення.</td></tr>
+<tr><td>Після перезавантаження потрібно повторити вимірювання</td><td>Це передбачене відновлення приладового кроку. Знову підготуйте прилад і виконайте потрібні перевірки.</td></tr>
+<tr><td>Рух недостатньо плавний</td><td>Знизьте якість графіки, спробуйте гібридні матеріали, перевірте FPS. IBL можна залишити вимкненим.</td></tr>
+<tr><td>Не відкривається друк схеми</td><td>Дозвольте браузеру відкрити вікно друку для сторінки симулятора й повторіть команду.</td></tr>
+<tr><td>Креслення не збігається з положенням апаратів</td><td>На вкладці однолінійної схеми ввімкніть «Показати поточний режим роботи» або перейдіть до оперативного подання.</td></tr>
+</tbody></table></div>
+<a class="back" href="#toc">↑ До змісту</a></section>
+
+<section class="chapter" id="reference"><span class="chapter-num">Пам’ятка</span><h2>Позначення й основні дії</h2>
+<p><strong>Огляд:</strong> миша · <strong>рух:</strong> WASD / стрілки · <strong>дія:</strong> F / ліва кнопка · <strong>вільний курсор:</strong> Esc · <strong>політ:</strong> C · <strong>присідання:</strong> Z · <strong>пульт:</strong> J · <strong>панелі:</strong> H.</p>
+<h3 id="designations">Відповідності позначень креслення</h3>
+<p>Це приклади чинного перемикання DSTU/GOST у симуляторі. Латинські літери й номер приєднання зберігаються відповідно до показаного позначення.</p>
+<div class="table-wrap"><table><thead><tr><th>DSTU</th><th>GOST</th><th>Елемент</th></tr></thead><tbody>
+<tr><td>QA-IN1</td><td>QF-IN1</td><td>Вимикач вводу 1</td></tr><tr><td>QB-T1</td><td>QS-T1</td><td>Роз’єднувач трансформаторного приєднання 1</td></tr><tr><td>QC-T1</td><td>QN-T1</td><td>Заземлювальний апарат трансформаторного приєднання 1</td></tr><tr><td>QA-S10 / QA-S04</td><td>QF-S10 / QF-S04</td><td>Секційні вимикачі 10 / 0,4 кВ</td></tr><tr><td>TA1</td><td>T1</td><td>Силовий трансформатор 1</td></tr><tr><td>BA-IN1</td><td>TV-IN1</td><td>ТН вводу 1</td></tr><tr><td>QB-F1 / FC1</td><td>QS-F1 / FU1</td><td>Апарат і запобіжник відхідної лінії 1</td></tr>
+</tbody></table></div>
+<h3>Скорочення</h3>
+<p><strong>РП</strong> — розподільний пристрій; <strong>КСО</strong> — камера збірна однобічного обслуговування; <strong>ВВ</strong> — вакуумний вимикач; <strong>ПВР</strong> — запобіжник-вимикач-роз’єднувач; <strong>ТТ / ТН</strong> — трансформатор струму / напруги; <strong>РЗА</strong> — релейний захист та автоматика; <strong>АВР</strong> — автоматичне введення резерву; <strong>ШОТ</strong> — шафа оперативного струму; <strong>АСКОЕ</strong> — автоматизована система комерційного обліку електроенергії; <strong>VTS</strong> — контроль справності кіл напруги; <strong>LRM</strong> — вимірювальний інтерфейс блока WEGA.</p>
+<a class="back" href="#toc">↑ До змісту</a></section>
+<footer class="footer">REM · Інструкція користувача · редакція 2 від 06.11.2026</footer>
+</main></div>
+<script>
+// Progressive enhancement: the document and its links work without JavaScript.
+if ('IntersectionObserver' in window) {
+  const links = [...document.querySelectorAll('nav a')];
+  const observer = new IntersectionObserver(entries => {
+    const entry = entries.find(item => item.isIntersecting);
+    if (!entry) return;
+    for (const link of links) {
+      if (link.hash === '#' + entry.target.id) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+  }, {rootMargin: '-5% 0px -70% 0px'});
+  document.querySelectorAll('section.chapter').forEach(section => observer.observe(section));
+}
+</script>
+</body></html>
